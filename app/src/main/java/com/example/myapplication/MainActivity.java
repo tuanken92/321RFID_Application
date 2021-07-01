@@ -251,8 +251,18 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
             if (myTags != null) {
                 Log.i(TAG, String.format("Number Tag = %d", myTags.length));
                 for (int index = 0; index < myTags.length; index++) {
-                    //Log.d(TAG, "Tag ID " + myTags[index].getTagID());
-                    Log.i(TAG, String.format("index = %d, Tag ID = %s", index, myTags[index].getTagID()));
+                    Log.d(TAG, "Tag ID " + myTags[index].getTagID());
+                    String str_tag_hex = myTags[index].getTagID();
+                    String str_tag_ascii = hextoascii.convert(str_tag_hex);
+                    Log.i(TAG, String.format("index = %d, Tag ID = %s -> %s", index, str_tag_hex, str_tag_ascii));
+                    //add to ui
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            addListViewData(str_tag_ascii);
+                        }
+                    });
+
                     if (myTags[index].getOpCode() == ACCESS_OPERATION_CODE.ACCESS_OPERATION_READ &&
                             myTags[index].getOpStatus() == ACCESS_OPERATION_STATUS.ACCESS_SUCCESS) {
                         if (myTags[index].getMemoryBankData().length() > 0) {
